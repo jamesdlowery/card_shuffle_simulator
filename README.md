@@ -116,4 +116,4 @@ README.md                             # This file
 
 ## License
 
-This project is released for personal and educational use. No warranty is expressed or implied.
+MIT — see [`LICENSE`](LICENSE) for details.
