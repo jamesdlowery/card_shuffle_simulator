@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Card Shuffle Simulator — User Guide</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: Georgia, 'Times New Roman', serif;
+      font-size: 16px;
+      line-height: 1.7;
+      color: #1a1a1a;
+      background: #f9f8f6;
+      padding: 2rem 1rem;
+    }
+
+    .page {
+      max-width: 860px;
+      margin: 0 auto;
+      background: #ffffff;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      padding: 3.5rem 4rem;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+    }
+
+    /* Header */
+    .doc-header {
+      border-bottom: 3px solid #2c5f8a;
+      padding-bottom: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    .doc-header h1 {
+      font-size: 2rem;
+      color: #2c5f8a;
+      font-weight: bold;
+      letter-spacing: -0.5px;
+    }
+    .doc-header .meta {
+      font-family: 'Courier New', monospace;
+      font-size: 0.85rem;
+      color: #666;
+      margin-top: 0.4rem;
+    }
+
+    /* TOC */
+    .toc {
+      background: #f0f5fb;
+      border-left: 4px solid #2c5f8a;
+      border-radius: 0 4px 4px 0;
+      padding: 1.2rem 1.5rem;
+      margin-bottom: 2.5rem;
+    }
+    .toc h2 {
+      font-size: 1rem;
+      font-family: Arial, sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #2c5f8a;
+      margin-bottom: 0.7rem;
+    }
+    .toc ol {
+      padding-left: 1.3rem;
+    }
+    .toc li {
+      margin: 0.25rem 0;
+      font-size: 0.95rem;
+      font-family: Arial, sans-serif;
+    }
+    .toc a {
+      color: #2c5f8a;
+      text-decoration: none;
+    }
+    .toc a:hover { text-decoration: underline; }
+
+    /* Sections */
+    h2 {
+      font-size: 1.4rem;
+      color: #2c5f8a;
+      border-bottom: 1px solid #c5d9ec;
+      padding-bottom: 0.3rem;
+      margin: 2.5rem 0 1rem;
+      font-family: Arial, sans-serif;
+    }
+    h3 {
+      font-size: 1.1rem;
+      color: #1a3a55;
+      margin: 1.5rem 0 0.5rem;
+      font-family: Arial, sans-serif;
+    }
+
+    p { margin-bottom: 0.9rem; }
+
+    /* Code / prompts */
+    pre {
+      background: #1e2533;
+      color: #c8d8e8;
+      border-radius: 5px;
+      padding: 1rem 1.2rem;
+      font-family: 'Courier New', monospace;
+      font-size: 0.88rem;
+      line-height: 1.5;
+      overflow-x: auto;
+      margin: 0.8rem 0 1rem;
+    }
+    code {
+      font-family: 'Courier New', monospace;
+      background: #eef2f7;
+      color: #1a3a55;
+      padding: 0.1em 0.35em;
+      border-radius: 3px;
+      font-size: 0.9em;
+    }
+    pre code {
+      background: none;
+      color: inherit;
+      padding: 0;
+      font-size: inherit;
+    }
+
+    /* Tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0 1.4rem;
+      font-size: 0.94rem;
+      font-family: Arial, sans-serif;
+    }
+    th {
+      background: #2c5f8a;
+      color: #fff;
+      text-align: left;
+      padding: 0.5rem 0.8rem;
+      font-weight: bold;
+    }
+    td {
+      padding: 0.45rem 0.8rem;
+      border-bottom: 1px solid #dde6ef;
+    }
+    tr:nth-child(even) td { background: #f4f8fc; }
+
+    /* Note boxes */
+    .note {
+      background: #fffbe6;
+      border-left: 4px solid #e6a817;
+      border-radius: 0 4px 4px 0;
+      padding: 0.8rem 1rem;
+      margin: 1rem 0;
+      font-size: 0.95rem;
+    }
+    .note strong { color: #8a5700; }
+
+    /* Lists */
+    ul, ol {
+      padding-left: 1.5rem;
+      margin-bottom: 0.9rem;
+    }
+    li { margin-bottom: 0.3rem; }
+
+    /* Footer */
+    .doc-footer {
+      margin-top: 3rem;
+      padding-top: 1rem;
+      border-top: 1px solid #ddd;
+      font-size: 0.82rem;
+      color: #888;
+      font-family: Arial, sans-serif;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <div class="doc-header">
+    <h1>Card Shuffle Simulator</h1>
+    <div class="meta">User Guide &nbsp;|&nbsp; Version: 20260405p &nbsp;|&nbsp; Language: Python 3</div>
+  </div>
+
+  <nav class="toc">
+    <h2>Table of Contents</h2>
+    <ol>
+      <li><a href="#overview">Overview</a></li>
+      <li><a href="#requirements">Requirements</a></li>
+      <li><a href="#starting">Starting the Program</a></li>
+      <li><a href="#config">Configuration Options</a></li>
+      <li><a href="#methods">Shuffle Methods</a></li>
+      <li><a href="#logs">Log Files</a></li>
+      <li><a href="#resume">Resuming a Session</a></li>
+      <li><a href="#notation">Card Notation</a></li>
+      <li><a href="#tips">Tips and Notes</a></li>
+    </ol>
+  </nav>
+
+  <!-- 1 -->
+  <h2 id="overview">1. Overview</h2>
+  <p>The Card Shuffle Simulator is a command-line Python program that simulates the repeated shuffling of one or more standard decks of playing cards. It supports two mathematically modelled shuffle algorithms, flexible deck configurations (number of decks, suits, jokers), and optional logging of every shuffle to disk. Sessions can be paused and resumed later from a saved log file.</p>
+
+  <!-- 2 -->
+  <h2 id="requirements">2. Requirements</h2>
+  <ul>
+    <li>Python 3.11 or later (required for <code>random.binomialvariate</code>)</li>
+    <li>A Unix-like operating system (Linux or macOS) for memory reporting; Windows is supported but memory usage will display as N/A</li>
+    <li>No third-party packages are required</li>
+  </ul>
+
+  <!-- 3 -->
+  <h2 id="starting">3. Starting the Program</h2>
+  <p>Run the script from a terminal:</p>
+  <pre><code>python card_shuffle_simulator_20260405p.py</code></pre>
+  <p>The program will prompt you for all settings interactively. Press <strong>Enter</strong> at any prompt to accept the default value shown in brackets.</p>
+
+  <!-- 4 -->
+  <h2 id="config">4. Configuration Options</h2>
+
+  <h3>Load from log file?</h3>
+  <pre><code>Load raw shuffle data from log file and resume shuffling? (y/n) [default: n]:</code></pre>
+  <p>Enter <code>y</code> to resume a previous session from a saved log file. Enter <code>n</code> (or press Enter) to start a fresh session.</p>
+
+  <h3>Number of decks</h3>
+  <pre><code>Number of decks (1–10 recommended, up to 99 accepted) [default: 1]:</code></pre>
+  <p>Sets how many standard 52-card decks are combined into one shuffled pack. Values from 1 to 99 are accepted; 1–10 is the recommended range for practical use.</p>
+
+  <h3>Suits</h3>
+  <pre><code>Include which suits? (S=spades, H=hearts, C=clubs, D=diamonds)
+Enter any combination (e.g. SH, SCD, H, all=SHCD) [default: SHCD]:</code></pre>
+  <p>Choose which suits to include. Any combination of S, H, C, and D is valid, in any order. If you enter nothing or an invalid string, all four suits are used.</p>
+  <table>
+    <tr><th>Input</th><th>Result</th></tr>
+    <tr><td><code>SHCD</code></td><td>Full deck — all four suits (default)</td></tr>
+    <tr><td><code>SH</code></td><td>Spades and Hearts only (26 cards per deck)</td></tr>
+    <tr><td><code>D</code></td><td>Diamonds only (13 cards per deck)</td></tr>
+  </table>
+
+  <h3>Jokers</h3>
+  <pre><code>Include jokers? (y/n) [default: n]:</code></pre>
+  <p>If <code>y</code>, two jokers (J1 and J2) are added to each deck.</p>
+
+  <h3>Initial order</h3>
+  <pre><code>Initial order: 'o' = ordered (new deck), 'r' = random [default: o]:</code></pre>
+  <ul>
+    <li><code>o</code> — Start with an ordered deck (suits grouped, ranks Ace through King).</li>
+    <li><code>r</code> — Start with a randomly shuffled deck.</li>
+  </ul>
+
+  <h3>Shuffle method</h3>
+  <pre><code>Shuffle method (g = GSR (Gilbert-Shannon-Reeds), s = simple riffle) [default g]:</code></pre>
+  <p>See <a href="#methods">Shuffle Methods</a> below for a full description of each.</p>
+
+  <h3>Loop until original order</h3>
+  <pre><code>Loop until the deck returns to its exact original order? (y/n) [default: n]:</code></pre>
+  <ul>
+    <li><code>y</code> — Shuffle indefinitely until the deck returns to its exact starting configuration. This can take an extremely large number of shuffles.</li>
+    <li><code>n</code> — Shuffle a fixed number of times.</li>
+  </ul>
+
+  <h3>Number of shuffles (fixed-count mode only)</h3>
+  <pre><code>How many shuffles to perform? [default: 1000000]:</code></pre>
+  <p>Only shown when <strong>Loop until original</strong> is <code>n</code>. Enter any positive integer.</p>
+
+  <h3>Progress interval</h3>
+  <pre><code>Show progress every how many shuffles? [default: 0]:</code></pre>
+  <ul>
+    <li><code>0</code> — No intermediate progress output.</li>
+    <li>Any positive integer <em>N</em> — Print the current deck state and elapsed time every <em>N</em> shuffles. Memory usage is also printed every 10×<em>N</em> shuffles.</li>
+  </ul>
+
+  <h3>Verbose log file</h3>
+  <pre><code>Log raw shuffle data to file? (y/n) [default: n]:</code></pre>
+  <p>If <code>y</code>, every shuffle result is written to a timestamped <code>.log</code> file. This file can be used to resume the session later. Note: verbose logs grow very large quickly (one line per shuffle).</p>
+
+  <!-- 5 -->
+  <h2 id="methods">5. Shuffle Methods</h2>
+
+  <h3>GSR — Gilbert-Shannon-Reeds (default)</h3>
+  <p>A mathematically accurate model of a real riffle shuffle. The deck is cut into two halves using a binomial distribution (so the cut point varies naturally), and cards are interleaved one at a time with probability proportional to the remaining size of each half. This is the standard model used in academic research on card shuffling.</p>
+
+  <h3>Simple Riffle</h3>
+  <p>A deterministic alternating interleave: the deck is cut exactly in half, and cards are dropped strictly alternating left-right (or right-left, chosen randomly). This produces a perfectly regular interleave every time and is less realistic than GSR, but useful for studying structured permutations.</p>
+
+  <!-- 6 -->
+  <h2 id="logs">6. Log Files</h2>
+  <p>The simulator always writes an <strong>abridged log file</strong>, regardless of whether verbose logging is enabled.</p>
+
+  <h3>Abridged log (<code>..._abridged.log</code>)</h3>
+  <p>Updated at each progress interval and at the end of the run. Contains all initial settings, the starting deck order (raw card IDs), and the most recently seen deck state with elapsed time. This file is overwritten on each update — it always reflects the latest known state.</p>
+
+  <h3>Verbose log (<code>....log</code>)</h3>
+  <p>Only created when you answer <code>y</code> to "Log raw shuffle data to file?". Contains all initial settings, the starting deck order, and one line per shuffle showing the shuffle number, full deck state (raw IDs), and elapsed time.</p>
+  <div class="note"><strong>Warning:</strong> At one million shuffles with a single full deck, this file will be hundreds of megabytes.</div>
+
+  <!-- 7 -->
+  <h2 id="resume">7. Resuming a Session</h2>
+  <p>To resume from a previous run:</p>
+  <ol>
+    <li>Run the program and answer <code>y</code> to the first prompt.</li>
+    <li>Enter the filename of either the verbose log or the abridged log.</li>
+  </ol>
+  <p><strong>From the verbose log:</strong> The program reads back all settings and the full shuffle history, resuming from the last recorded shuffle.</p>
+  <p><strong>From the abridged log:</strong> The program reads back settings and the most recently saved deck state. Because only the last visible state is stored, the exact shuffle count may be an approximation.</p>
+  <p>If the session had already completed, the program will report this and exit without shuffling further.</p>
+
+  <!-- 8 -->
+  <h2 id="notation">8. Card Notation</h2>
+  <p>Cards are displayed in a compact two-character format (per card, within a single deck):</p>
+  <table>
+    <tr><th>Character(s)</th><th>Meaning</th></tr>
+    <tr><td><code>A</code></td><td>Ace</td></tr>
+    <tr><td><code>2</code>–<code>9</code></td><td>Numbered cards 2–9</td></tr>
+    <tr><td><code>1</code></td><td>10</td></tr>
+    <tr><td><code>J</code></td><td>Jack</td></tr>
+    <tr><td><code>Q</code></td><td>Queen</td></tr>
+    <tr><td><code>K</code></td><td>King</td></tr>
+    <tr><td><code>C</code></td><td>Clubs</td></tr>
+    <tr><td><code>D</code></td><td>Diamonds</td></tr>
+    <tr><td><code>H</code></td><td>Hearts</td></tr>
+    <tr><td><code>S</code></td><td>Spades</td></tr>
+    <tr><td><code>J1</code> / <code>J2</code></td><td>Joker 1 / Joker 2</td></tr>
+  </table>
+  <p>Examples: <code>AC</code> = Ace of Clubs, <code>1H</code> = 10 of Hearts, <code>KS</code> = King of Spades.</p>
+  <p><strong>Multiple decks:</strong> When more than one deck is in use, each card is prefixed with its deck number, zero-padded to the number of digits needed. For example, with two decks: <code>01AC</code>, <code>02KS</code>. With ten decks: <code>01AC</code> through <code>10KS</code>.</p>
+
+  <!-- 9 -->
+  <h2 id="tips">9. Tips and Notes</h2>
+  <ul>
+    <li><strong>The "loop until original" mode can run for an astronomically long time.</strong> For a GSR shuffle, the expected number of shuffles before a deck returns to its original order grows extremely rapidly with deck size. Enable progress reporting and verbose logging if you intend to let it run unattended.</li>
+    <li><strong>Verbose logging slows things down significantly</strong> for large numbers of shuffles. Disable it if raw speed is the priority.</li>
+    <li><strong>The abridged log is always safe to resume from</strong>, even if the verbose log was not enabled. It won't have the exact intermediate shuffle count, but it will have the correct deck state.</li>
+    <li><strong>Keyboard interrupt (Ctrl+C):</strong> If you interrupt the program, the verbose log file will still be properly closed, and the last abridged log snapshot will be intact. You can resume from either file.</li>
+    <li><strong>Windows users:</strong> Memory reporting will show "N/A" — this is expected and does not affect functionality.</li>
+  </ul>
+
+  <div class="doc-footer">Card Shuffle Simulator User Guide &mdash; Version 20260405p</div>
+</div>
+</body>
+</html>

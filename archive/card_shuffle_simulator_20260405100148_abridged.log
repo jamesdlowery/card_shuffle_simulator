@@ -1,0 +1,19 @@
+=== Card Shuffle Simulator - Abridged Summary ===
+Last visible update: shuffle 12345
+Timestamp: 2026-04-05 10:01:48 UTC
+
+Initial settings:
+  Number of decks: 1
+  Suits: SHCD
+  Include jokers: n
+  Initial order: o
+  Shuffle method: g
+  Loop until original: n
+  How many shuffles: 12345
+  Show progress every how many shuffles: 0
+
+Initial: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51
+
+Most recent visible deck (after shuffle 12345):
+  Elapsed time: 0.4661 s  (0.5s)
+  Deck (raw): 41 48 51 27 21 23 8 46 35 19 15 5 44 2 45 33 42 7 12 13 30 18 26 43 29 34 16 40 20 31 10 49 36 3 37 39 47 14 1 17 6 4 9 24 11 25 0 28 50 32 22 38
