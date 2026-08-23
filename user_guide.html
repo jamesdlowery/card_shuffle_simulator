@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Card Shuffle Simulator ��� User Guide</title>
+  <style>
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      background-color: #1a1a1a;
+      border: none;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+    /* CSS for syntax highlighting */
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Card Shuffle Simulator ��� User Guide</h1>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#card-shuffle-simulator-user-guide"
+id="toc-card-shuffle-simulator-user-guide">Card Shuffle Simulator – User
+Guide</a>
+<ul>
+<li><a href="#introduction" id="toc-introduction">1.
+Introduction</a></li>
+<li><a href="#installation-requirements"
+id="toc-installation-requirements">2. Installation &amp;
+Requirements</a></li>
+<li><a href="#interactive-prompts-in-order"
+id="toc-interactive-prompts-in-order">3. Interactive Prompts (in
+order)</a></li>
+<li><a href="#shuffle-algorithms" id="toc-shuffle-algorithms">4. Shuffle
+Algorithms</a></li>
+<li><a href="#card-encoding-display" id="toc-card-encoding-display">5.
+Card Encoding &amp; Display</a></li>
+<li><a href="#logging-system" id="toc-logging-system">6. Logging
+System</a></li>
+<li><a href="#resuming-a-run" id="toc-resuming-a-run">7. Resuming a
+Run</a></li>
+<li><a href="#progress-reporting" id="toc-progress-reporting">8.
+Progress Reporting</a></li>
+<li><a href="#stopping-conditions" id="toc-stopping-conditions">9.
+Stopping Conditions</a></li>
+<li><a href="#performance-tips" id="toc-performance-tips">10.
+Performance Tips</a></li>
+<li><a href="#troubleshooting" id="toc-troubleshooting">11.
+Troubleshooting</a></li>
+<li><a href="#file-naming-convention"
+id="toc-file-naming-convention">12. File Naming Convention</a></li>
+<li><a href="#version-history-summary"
+id="toc-version-history-summary">13. Version History (summary)</a></li>
+<li><a href="#license-disclaimer" id="toc-license-disclaimer">14.
+License &amp; Disclaimer</a></li>
+</ul></li>
+</ul>
+</nav>
+<h1 id="card-shuffle-simulator-user-guide">Card Shuffle Simulator – User
+Guide</h1>
+<p><strong>Version 1.2.0</strong><br />
+<strong>Date: 2026-08-22</strong></p>
+<hr />
+<h2 id="introduction">1. Introduction</h2>
+<p>The Card Shuffle Simulator is a command-line tool that models
+realistic card shuffling. It is useful for:</p>
+<ul>
+<li>Studying the mixing properties of the Gilbert-Shannon-Reeds (GSR)
+model</li>
+<li>Experimenting with multi-deck and reduced-suit configurations</li>
+<li>Measuring how many shuffles are required before a deck returns to
+its original order</li>
+<li>Long-running Monte-Carlo style simulations with full audit
+trails</li>
+</ul>
+<p>The program is written in pure Python 3 and depends only on the
+standard library.</p>
+<hr />
+<h2 id="installation-requirements">2. Installation &amp;
+Requirements</h2>
+<ol type="1">
+<li><p>Ensure Python 3.8+ is installed:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> <span class="at">--version</span></span></code></pre></div></li>
+<li><p>Copy <code>card_shuffle_simulator.py</code> to any
+directory.</p></li>
+<li><p>Make it executable (optional):</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> +x card_shuffle_simulator.py</span></code></pre></div></li>
+<li><p>Run:</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> card_shuffle_simulator.py</span></code></pre></div></li>
+</ol>
+<p>No additional packages are required. On Windows the
+<code>resource</code> module is unavailable; peak-memory reporting is
+simply omitted.</p>
+<hr />
+<h2 id="interactive-prompts-in-order">3. Interactive Prompts (in
+order)</h2>
+<p>When you start a new run the program asks the following questions.
+Press Enter to accept the default shown in brackets.</p>
+<table>
+<colgroup>
+<col style="width: 11%" />
+<col style="width: 29%" />
+<col style="width: 33%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>#</th>
+<th>Prompt</th>
+<th>Default</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>Load raw shuffle data from log file and resume shuffling? (y/n)</td>
+<td>n</td>
+<td>Answer <code>y</code> to resume</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>Number of decks (1–10 recommended, up to 99 accepted)</td>
+<td>1</td>
+<td>Integer 1–99</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>Include which suits? (S=spades, H=hearts, C=clubs, D=diamonds)</td>
+<td>SHCD</td>
+<td>Any combination; empty → SHCD</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>Include jokers? (y/n)</td>
+<td>n</td>
+<td>Adds J1 and J2</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td>Initial order: ‘o’ = ordered (new deck), ‘r’ = random</td>
+<td>o</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td>Shuffle method (g = GSR, s = simple riffle)</td>
+<td>g</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>7</td>
+<td>Loop until the deck returns to its exact original order? (y/n)</td>
+<td>n</td>
+<td>If <code>y</code>, the next prompt is skipped</td>
+</tr>
+<tr class="even">
+<td>8</td>
+<td>How many shuffles to perform?</td>
+<td>1000000</td>
+<td>Only asked when not looping</td>
+</tr>
+<tr class="odd">
+<td>9</td>
+<td>Show progress every how many shuffles?</td>
+<td>0</td>
+<td>0 = no intermediate progress</td>
+</tr>
+<tr class="even">
+<td>10</td>
+<td>Log raw shuffle data to file? (y/n)</td>
+<td>n</td>
+<td>Creates the verbose log</td>
+</tr>
+</tbody>
+</table>
+<p>When resuming (<code>y</code> to the first question) you are asked
+only for the log-file name; all other parameters are restored from the
+log.</p>
+<hr />
+<h2 id="shuffle-algorithms">4. Shuffle Algorithms</h2>
+<h3 id="gilbert-shannon-reeds-gsr-default">4.1 Gilbert-Shannon-Reeds
+(GSR) – default</h3>
+<ol type="1">
+<li>Cut the deck at a position drawn from a binomial distribution
+Binomial(n, ½).</li>
+<li>Interleave the two halves by repeatedly choosing the next card from
+the left or right packet with probability proportional to the remaining
+cards in that packet.</li>
+</ol>
+<p>This is the classic mathematical model of a “good” riffle
+shuffle.</p>
+<h3 id="simple-riffle">4.2 Simple riffle</h3>
+<ol type="1">
+<li>Cut the deck exactly in half (or as close as possible).</li>
+<li>Alternate cards from the two halves, randomly deciding which half
+starts.</li>
+</ol>
+<p>Faster but less realistic than GSR.</p>
+<hr />
+<h2 id="card-encoding-display">5. Card Encoding &amp; Display</h2>
+<ul>
+<li>Internally every card is a single integer.</li>
+<li>Display format:
+<ul>
+<li>Single deck: <code>AS</code>, <code>2H</code>, <code>1C</code> (ten
+of clubs), <code>KD</code>, <code>J1</code>, <code>J2</code></li>
+<li>Multi-deck: a zero-padded numeric prefix is added (<code>2AS</code>,
+<code>10KC</code>, …)</li>
+</ul></li>
+<li>The ten of any suit is always shown as the single character
+<code>1</code>.</li>
+<li>Jokers are always <code>J1</code> and <code>J2</code> (never
+“JokerA/B”).</li>
+</ul>
+<p>When fewer than four suits are selected the joker boundary is
+calculated dynamically so that jokers never collide with ordinary
+cards.</p>
+<hr />
+<h2 id="logging-system">6. Logging System</h2>
+<h3 id="abridged-log-always-created">6.1 Abridged log (always
+created)</h3>
+<p>Filename pattern:</p>
+<pre><code>card_shuffle_simulator_YYYYMMDDHHMMSS_abridged.log</code></pre>
+<p>Contents (overwritten on every progress update and at the end):</p>
+<ul>
+<li>Version</li>
+<li>Last visible shuffle number</li>
+<li>UTC timestamp</li>
+<li>All original settings</li>
+<li>The exact initial deck (raw integers)</li>
+<li>The most recent deck state that was shown on screen, plus cumulative
+elapsed time</li>
+</ul>
+<p>Because only the latest state is kept, the file stays small even for
+multi-million-shuffle runs.</p>
+<h3 id="verbose-log-optional">6.2 Verbose log (optional)</h3>
+<p>Filename pattern:</p>
+<pre><code>card_shuffle_simulator_YYYYMMDDHHMMSS.log</code></pre>
+<p>Contents:</p>
+<ul>
+<li><p>Header with all parameters</p></li>
+<li><p><code>Initial: …</code></p></li>
+<li><p>One line per shuffle:</p>
+<pre><code>Shuffle N: 12 0 45 … elapsed: 123.4567</code></pre></li>
+</ul>
+<p>When you resume from a verbose log the program opens it in
+<strong>append</strong> mode so the audit trail continues
+uninterrupted.</p>
+<hr />
+<h2 id="resuming-a-run">7. Resuming a Run</h2>
+<ol type="1">
+<li>Answer <code>y</code> to the first prompt.</li>
+<li>Enter the name of either an abridged or a full verbose log.</li>
+<li>The program restores:
+<ul>
+<li>All original settings</li>
+<li>The last recorded deck order</li>
+<li>The cumulative elapsed time</li>
+</ul></li>
+<li>Shuffling continues from that point.</li>
+<li>If the target number of shuffles (or the “return to original”) has
+already been reached, the program reports completion and exits.</li>
+</ol>
+<p>You may manually edit the “How many shuffles” value inside an
+abridged log; the next resume will honour the new target.</p>
+<hr />
+<h2 id="progress-reporting">8. Progress Reporting</h2>
+<p>When <code>Show progress every how many shuffles?</code> is greater
+than zero the program prints:</p>
+<pre><code>Shuffle 100000 | Elapsed: 58.9s | Peak memory: 10.5 MB
+AS 2H … J2</code></pre>
+<ul>
+<li>The final shuffle of a fixed-count run does <strong>not</strong>
+produce an intermediate progress line (the final summary is printed
+instead).</li>
+<li>Peak memory is sampled only every 10 progress intervals to keep
+overhead low.</li>
+</ul>
+<hr />
+<h2 id="stopping-conditions">9. Stopping Conditions</h2>
+<p>The simulation ends when any of the following occurs:</p>
+<ul>
+<li>The requested number of shuffles has been reached (fixed-count
+mode).</li>
+<li>The deck returns to its exact original order (always checked, even
+if you answered “n” to the loop question). An explicit alert is
+printed.</li>
+<li>The user interrupts with Ctrl-C (the verbose log handle is closed
+cleanly via a <code>finally</code> block).</li>
+</ul>
+<hr />
+<h2 id="performance-tips">10. Performance Tips</h2>
+<ul>
+<li>Prefer the GSR method for scientific accuracy; the simple riffle is
+faster for pure volume testing.</li>
+<li>Set progress interval to 0 (or a large number) when running tens of
+millions of shuffles to minimise I/O.</li>
+<li>The verbose log can become large; disable it unless you need a
+complete audit trail.</li>
+<li>Multi-deck + jokers increases both memory and CPU cost
+linearly.</li>
+</ul>
+<p>Typical throughput on modern hardware (single deck, GSR, no progress
+output):</p>
+<ul>
+<li>≈ 15 000–25 000 shuffles per second (varies with Python version and
+CPU).</li>
+</ul>
+<hr />
+<h2 id="troubleshooting">11. Troubleshooting</h2>
+<table>
+<colgroup>
+<col style="width: 29%" />
+<col style="width: 45%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Symptom</th>
+<th>Likely cause</th>
+<th>Remedy</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>NameError: cards_per_suit_set</code></td>
+<td>Older script version</td>
+<td>Use v1.2.0 or later</td>
+</tr>
+<tr class="even">
+<td>Jokers display as ordinary cards</td>
+<td>Reduced-suit run with pre-1.1 code</td>
+<td>Upgrade</td>
+</tr>
+<tr class="odd">
+<td>Resume does not append to verbose log</td>
+<td>Pre-1.2.0 code</td>
+<td>Upgrade – handle is now opened in append mode</td>
+</tr>
+<tr class="even">
+<td><code>resource</code> module missing on Windows</td>
+<td>Expected</td>
+<td>Peak-memory line shows “N/A”</td>
+</tr>
+<tr class="odd">
+<td>Very slow progress</td>
+<td>Progress interval too small + verbose logging</td>
+<td>Increase interval or disable verbose log</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="file-naming-convention">12. File Naming Convention</h2>
+<p>All log files use UTC timestamps of the form
+<code>YYYYMMDDHHMMSS</code>:</p>
+<pre><code>card_shuffle_simulator_20260822193407.log
+card_shuffle_simulator_20260822193407_abridged.log</code></pre>
+<hr />
+<h2 id="version-history-summary">13. Version History (summary)</h2>
+<ul>
+<li><strong>1.2.0</strong> (2026-08-22) – Resume from full verbose log
+correctly appends; version metadata; documentation; guaranteed
+<code>cards_per_suit_set</code> in all execution paths.</li>
+<li><strong>1.1.x</strong> – Dynamic suit counts, robust input
+validation, deque-based GSR, abridged logging, cumulative elapsed time,
+original-order alert.</li>
+<li><strong>1.0</strong> – First interactive implementation.</li>
+</ul>
+<hr />
+<h2 id="license-disclaimer">14. License &amp; Disclaimer</h2>
+<p>This software is provided as-is with no warranty of any kind. Use it
+freely for research, education, or entertainment.</p>
+<hr />
+<p><em>End of User Guide</em></p>
+</body>
+</html>

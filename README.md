@@ -1,119 +1,96 @@
 # Card Shuffle Simulator
 
-A command-line Python program that simulates the repeated shuffling of one or more standard decks of playing cards. Two mathematically modelled shuffle algorithms are supported, along with flexible deck configurations and optional per-shuffle logging. Sessions can be interrupted and resumed from a saved log file.
+**Version:** 1.2.0  
+**Date:** 2026-08-22  
+**Language:** Python 3.8+
 
----
+A high-fidelity text-based simulator of real-world card shuffling. It implements the mathematically rigorous Gilbert-Shannon-Reeds (GSR) model as well as a simpler alternating riffle, supports multi-deck configurations, selectable suits, optional jokers, long-running simulations, resume-from-log, dual logging, and progress reporting with resource monitoring.
 
 ## Features
 
-- **Two shuffle algorithms:** Gilbert-Shannon-Reeds (GSR) — the academic standard for riffle shuffle modelling — and a simple alternating riffle
-- **Flexible deck configuration:** 1–99 decks, any combination of suits, optional jokers, ordered or random starting order
-- **Two run modes:** shuffle a fixed number of times, or loop until the deck returns to its exact original order
-- **Session persistence:** every run writes an abridged log; optional verbose logging records the full deck state after every single shuffle; either file can be used to resume a session later
-- **Progress reporting:** configurable interval for mid-run deck snapshots and elapsed time; periodic peak memory reporting on Linux/macOS
-- **Compact card notation:** all cards represented in a consistent fixed-width format regardless of deck count
-- **No dependencies:** pure Python standard library, no third-party packages required
-
----
+- **Shuffle models**
+  - Gilbert-Shannon-Reeds (GSR) – probabilistic binomial cut + weighted interleaving
+  - Simple riffle – fixed cut + alternating merge with random starting side
+- **Deck configuration**
+  - 1–99 decks
+  - Any combination of suits (S/H/C/D) – decks as small as 13 cards supported
+  - Optional jokers (J1 / J2)
+  - Ordered (new-deck) or random initial order
+- **Execution modes**
+  - Fixed number of shuffles
+  - Loop until the deck returns to its exact original order (always alerts on return)
+- **Logging & resume**
+  - Always creates an abridged summary log (`*_abridged.log`)
+  - Optional full verbose log of every shuffle (raw integer IDs + elapsed time)
+  - Resume from either log type; elapsed time is cumulative across sessions
+  - When resuming from a full verbose log, new results are appended
+- **Progress & diagnostics**
+  - Configurable progress interval
+  - Elapsed wall-clock time (human-readable)
+  - Peak memory reporting (cross-platform)
+- **Performance**
+  - Integer card IDs (no string manipulation in the hot loop)
+  - O(n) GSR implementation using `collections.deque`
+  - Verbose log file opened once and kept open for the entire run
 
 ## Requirements
 
-- Python **3.11 or later** (uses `random.binomialvariate`, introduced in 3.11)
-- Linux or macOS recommended for memory reporting; Windows is fully supported (memory will display as N/A)
+- Python 3.8 or later
+- Standard library only (`random`, `datetime`, `resource`, `sys`, `time`, `os`, `re`, `collections`)
 
----
+On Windows the `resource` module is unavailable; peak-memory reporting gracefully degrades to “N/A”.
 
-## Usage
+## Quick Start
 
 ```bash
-python card_shuffle_simulator_20260405p.py
+python3 card_shuffle_simulator.py
 ```
 
-All configuration is prompted interactively. Press **Enter** at any prompt to accept the default shown in brackets.
+Follow the interactive prompts. Defaults are shown in brackets.
 
-### Example session
+Example minimal session (single deck, no jokers, GSR, 1 000 000 shuffles):
 
 ```
-Load raw shuffle data from log file and resume shuffling? (y/n) [default: n]: n
-Number of decks (1–10 recommended, up to 99 accepted) [default: 1]: 1
-Include which suits? (S=spades, H=hearts, C=clubs, D=diamonds)
-Enter any combination (e.g. SH, SCD, H, all=SHCD) [default: SHCD]: SHCD
-Include jokers? (y/n) [default: n]: n
-Initial order: 'o' = ordered (new deck), 'r' = random [default: o]: o
-Shuffle method (g = GSR (Gilbert-Shannon-Reeds), s = simple riffle) [default g]: g
-Loop until the deck returns to its exact original order? (y/n) [default: n]: n
-How many shuffles to perform? [default: 1000000]: 1000000
-Show progress every how many shuffles? [default: 0]: 100000
-Log raw shuffle data to file? (y/n) [default: n]: n
+Load raw shuffle data from log file and resume shuffling? (y/n) [default: n]: 
+Number of decks (1–10 recommended, up to 99 accepted) [default: 1]: 
+Include which suits? ... [default: SHCD]: 
+Include jokers? (y/n) [default: n]: 
+Initial order: 'o' = ordered (new deck), 'r' = random [default: o]: 
+Shuffle method (g = GSR ..., s = simple riffle) [default g]: 
+Loop until the deck returns to its exact original order? (y/n) [default: n]: 
+How many shuffles to perform? [default: 1000000]: 
+Show progress every how many shuffles? [default: 0]: 
+Log raw shuffle data to file? (y/n) [default: n]: 
 ```
-
----
-
-## Configuration Reference
-
-| Prompt | Options | Default |
-|--------|---------|---------|
-| Load from log file | `y` / `n` | `n` |
-| Number of decks | 1–99 | `1` |
-| Suits | Any of `S` `H` `C` `D` | `SHCD` |
-| Include jokers | `y` / `n` | `n` |
-| Initial order | `o` (ordered) / `r` (random) | `o` |
-| Shuffle method | `g` (GSR) / `s` (simple riffle) | `g` |
-| Loop until original | `y` / `n` | `n` |
-| Number of shuffles | Any positive integer | `1000000` |
-| Progress interval | 0 = off, or any positive integer | `0` |
-| Verbose log | `y` / `n` | `n` |
-
----
-
-## Shuffle Methods
-
-### GSR — Gilbert-Shannon-Reeds
-The standard mathematical model of a riffle shuffle. The deck is cut at a binomially distributed position and the two halves are interleaved card-by-card with probability proportional to the remaining size of each half. This closely mirrors how a real shuffle behaves.
-
-### Simple Riffle
-The deck is cut exactly in half and cards are dropped in strict alternating order (left-right or right-left, chosen randomly each time). Produces a perfectly regular interleave — less realistic than GSR, but useful for exploring deterministic permutation cycles.
-
----
-
-## Card Notation
-
-Cards are displayed in a compact, fixed-width format. Within a single deck, every card is exactly two characters:
-
-| Characters | Meaning |
-|---|---|
-| `AC` `2C` … `KC` | Ace through King of Clubs |
-| `AD` `2D` … `KD` | Ace through King of Diamonds |
-| `AH` `2H` … `KH` | Ace through King of Hearts |
-| `AS` `2S` … `KS` | Ace through King of Spades |
-| `1x` | 10 of suit `x` (keeps notation to 2 chars) |
-| `J1` `J2` | Joker 1, Joker 2 |
-
-When multiple decks are in use, each card is prefixed with its zero-padded deck number. With 2 decks: `01AC` … `02KS`. With 10 decks: `01AC` … `10KS`.
-
----
 
 ## Log Files
 
-An **abridged log** (`..._abridged.log`) is always written, regardless of other settings. It is overwritten on every progress update and records the current settings, initial deck, and most recent deck state.
+| Type | Filename pattern | Content |
+|------|------------------|---------|
+| Abridged (always) | `card_shuffle_simulator_YYYYMMDDHHMMSS_abridged.log` | Settings, initial order, latest visible state + elapsed time |
+| Verbose (optional) | `card_shuffle_simulator_YYYYMMDDHHMMSS.log` | Header + one line per shuffle (`Shuffle N: … elapsed: …`) |
 
-A **verbose log** (`....log`) is created only when requested. It records the full deck state after every single shuffle and can be large — hundreds of megabytes for a million-shuffle run on a full deck.
+Both formats can be loaded to resume a run. Editing the “How many shuffles” value in an abridged log allows continuing past the original target.
 
-Either log file can be passed back to the program at startup to resume a previous session.
+## Card Representation
 
-> **Note:** If interrupted with Ctrl+C, the verbose log is safely closed via a `try/finally` block and the abridged log will contain the last recorded snapshot.
+- Internal: compact integer IDs
+- Display: `AS`, `1H`, `KC`, … and `J1`/`J2` for jokers
+- Multi-deck: numeric prefix without hyphen (`2AS`, `10KC`, …)
+- Ten of a suit is abbreviated `1` (e.g. `1S` = ten of spades)
 
----
+## Version History
 
-## File Structure
-
-```
-card_shuffle_simulator_20260405p.py   # Main script
-README.md                             # This file
-```
-
----
+| Version | Date | Notes |
+|---------|------|-------|
+| 1.2.0 | 2026-08-22 | Resume from full verbose log now correctly appends; version string & docs added; cards_per_suit_set guaranteed in all paths |
+| 1.1.x | 2026-04 | Iterative robustness, input validation, performance (deque), abridged logging, suits selection |
+| 1.0 | earlier | Initial interactive simulator |
 
 ## License
 
-MIT — see [`LICENSE`](LICENSE) for details.
+Public domain / unrestricted use. No warranty.
+
+## Author Notes
+
+Developed iteratively with extensive attention to correctness (especially reduced-suit + joker edge cases), performance for multi-million-shuffle runs, and reliable resume semantics.
